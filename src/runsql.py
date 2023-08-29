@@ -15,6 +15,6 @@ class SQL():
     def run_fromtext(self, query):
         self._cursor.execute(query)
         return self._cursor.fetchall()
-    
+
     def cnn_close(self):
         self._connection.close()
