@@ -8,7 +8,7 @@ class SQL():
 
     def run_fromfile(self, path):
         with open(path, "r") as file:
-            q = file.read().replace('\n', '')
+            q = file.read().replace('\n', ' ')
         self._cursor.execute(q)
         return self._cursor.fetchall()
 

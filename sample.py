@@ -3,4 +3,4 @@ import src.runsql as runsql
 
 sql = runsql.SQL()
 
-print(sql.run_fromfile("queries/highlights10_approach1.sql"))
+print(sql.run_fromfile("queries\country_with_budgets.sql"))
