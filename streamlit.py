@@ -3,27 +3,55 @@ import pandas as pd
 import sqlite3
 
 #load database
+
 connection = sqlite3.connect("database/vivino.db")
 cursor = connection.cursor()
 
-# functions to be defined:
-def show_wine(query):
-    cursor.execute(query)
-    text = cursor.fetchall()
-    return text
-
 # function to take the sidebar input and form an query
 def get_query(min_price,max_price, rating_min,rating_max,country_list):
-    country_list_tuple = tuple(country_list)
-    query = f"SELECT vintages.name, vintages.price_euros, vintages.ratings_average, countries.name FROM vintages
+    if len(country_list) > 1:
+        country_list_tuple = tuple(country_list)
+        query = f"""
+        SELECT vintages.name AS wine, vintages.price_euros AS Price, vintages.ratings_average AS Rating, countries.name AS Country 
+        FROM vintages
 JOIN wines ON vintages.wine_id = wines.id
 JOIN regions ON wines.region_id = regions.id
 JOIN countries ON regions.country_code = countries.code
 WHERE  (vintages.price_euros BETWEEN {min_price} AND {max_price})
     AND (vintages.ratings_average BETWEEN {rating_min} AND {rating_max})
     AND (countries.name IN {country_list_tuple})
-ORDER BY vintages.price_euros DESC
-LIMIT 10 "
+ORDER BY vintages.ratings_average DESC
+LIMIT 10 
+"""
+        
+    elif len(country_list)==1 :
+        countryname = country_list[0]
+        query = f"""
+        SELECT vintages.name AS wine, vintages.price_euros AS Price, vintages.ratings_average AS Rating, countries.name AS Country 
+        FROM vintages
+JOIN wines ON vintages.wine_id = wines.id
+JOIN regions ON wines.region_id = regions.id
+JOIN countries ON regions.country_code = countries.code
+
+WHERE countries.name = '{countryname}'
+    AND (vintages.price_euros BETWEEN {min_price} AND {max_price})
+    AND (vintages.ratings_average BETWEEN {rating_min} AND {rating_max})
+    
+ORDER BY vintages.ratings_average DESC
+LIMIT 10 
+"""
+    else:
+        query = f"""
+        SELECT vintages.name AS wine, vintages.price_euros AS Price, vintages.ratings_average AS Rating, countries.name AS Country 
+        FROM vintages
+JOIN wines ON vintages.wine_id = wines.id
+JOIN regions ON wines.region_id = regions.id
+JOIN countries ON regions.country_code = countries.code
+WHERE  (vintages.price_euros BETWEEN {min_price} AND {max_price})
+    AND (vintages.ratings_average BETWEEN {rating_min} AND {rating_max})
+ORDER BY vintages.ratings_average DESC
+LIMIT 10 
+"""
     return query
 
 def get_country():
@@ -51,13 +79,22 @@ country = st.sidebar.multiselect("Country",countrylist)
 
 
 #show me the wine button
-show_wine = st.sidebar.button("Show me wine")
+show_button = st.sidebar.button("Show me wine")
     
-if show_wine:
+if show_button:
     min_price = price[0]
     max_price = price[1]
     rating_min = ratings[0]
     rating_max = ratings[1]
-    country_list = country
-    st.write(f"{min_price},{max_price},{rating_min},{rating_max},{country_list}")
+    if country:
+        country_list = country
+    else: country_list = []
+    # st.write(f"{min_price},{max_price},{rating_min},{rating_max},{country_list}")
+    q = get_query(min_price,max_price, rating_min,rating_max,country_list)
+    
+    data = pd.read_sql_query(q,connection)
+    st.dataframe(data)
+
+
+
 
