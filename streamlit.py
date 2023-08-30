@@ -8,7 +8,7 @@ connection = sqlite3.connect("database/vivino.db")
 cursor = connection.cursor()
 
 # function to take the sidebar input and form an query
-def get_query(min_price,max_price, rating_min,rating_max,country_list):
+def get_query(min_price,max_price, rating_min,rating_max,country_list,key):
     if len(country_list) > 1:
         country_list_tuple = tuple(country_list)
         query = f"""
@@ -60,6 +60,12 @@ def get_country():
     country_list = df["name"].unique()
     return country_list
 
+def get_keyword():
+    """This function retuns a list of the countries for the multi select box for the sidebar"""
+    df = pd.read_csv("database/csv/keywords_wine.csv")
+    keywordlist = df["group_name"].unique()
+    return keywordlist
+
 # Here below is the code to define the main page
 st.title("Find the wine you like!")
 
@@ -74,9 +80,12 @@ price = st.sidebar.slider('Price range', 0.0, 150.0, (10.0, 50.0),step = 1.0)
 ratings = st.sidebar.slider('Ratings', 4.0, 5.0,(4.1, 5.0),step = 0.1)
 
 # multiselect country
-countrylist = get_country()
-country = st.sidebar.multiselect("Country",countrylist)
+countries = get_country()
+country = st.sidebar.multiselect("Country",countries)
 
+# single select keyword
+keywords = get_keyword()
+keyword = st.sidebar.selectbox("Select one keyword",keywords)
 
 #show me the wine button
 show_button = st.sidebar.button("Show me wine")
@@ -89,6 +98,10 @@ if show_button:
     if country:
         country_list = country
     else: country_list = []
+    if keyword:
+        key = keyword
+    else:
+        key = False
     # st.write(f"{min_price},{max_price},{rating_min},{rating_max},{country_list}")
     q = get_query(min_price,max_price, rating_min,rating_max,country_list)
     
