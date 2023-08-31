@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+
 import src.runsql as runsql
 import pandas as pd
 import sqlite3
