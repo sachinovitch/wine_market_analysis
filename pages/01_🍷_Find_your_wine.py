@@ -12,11 +12,11 @@ def get_query(min_price,max_price,
               rating_min,rating_max,country_list,keyword_list):
     query = f"""
     SELECT
-        vintages.name AS wine
+        vintages.name AS Wine
         ,vintages.price_euros AS Price
         ,vintages.ratings_average AS Rating
         ,countries.name AS Country
-        ,GROUP_CONCAT(DISTINCT keywords_wine.group_name) as Keyword
+        ,GROUP_CONCAT(DISTINCT keywords_wine.group_name) as Flavor
     FROM vintages
     JOIN wines ON vintages.wine_id = wines.id
     JOIN keywords_wine ON vintages.wine_id = keywords_wine.wine_id
@@ -78,4 +78,4 @@ if show_button:
     # st.write(f"{min_price},{max_price},{rating_min},{rating_max},{country_list}")
     q = get_query(min_price,max_price, rating_min,rating_max,country,keyword)
     data = pd.read_sql_query(q,connection)
-    st.dataframe(data)
+    st.dataframe(data,hide_index=True)
