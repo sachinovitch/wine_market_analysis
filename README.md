@@ -19,7 +19,7 @@ The webapp has been deployed [here](https://winemarketanalysis-3qumvsapp43avwalh
 
 ## Usage
 
-The webapp can be found on [this link](https://winemarketanalysis-3qumvsapp43avwalh5bq2ex.streamlit.app/).<br>
+The webapp can be found on [this link](https://winemarketanalysis.streamlit.app/).<br>
 In order to run the app locally check the installation section.
 
 ## Context
