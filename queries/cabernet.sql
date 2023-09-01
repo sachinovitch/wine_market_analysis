@@ -1,8 +1,7 @@
 SELECT
-	v.name
-	,v.ratings_average
-	,v.price_euros * 750 / v.bottle_volume_ml price_per_750
-	,bottle_volume_ml/750 as bottle_size
+	v.name AS Name
+	,v.ratings_average AS Rating
+	,v.price_euros * 750 / v.bottle_volume_ml AS Price
 FROM
 	vintages v
 JOIN
