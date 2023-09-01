@@ -16,7 +16,7 @@ def get_query(min_price,max_price,
         ,vintages.price_euros AS Price
         ,vintages.ratings_average AS Rating
         ,countries.name AS Country
-        ,keywords_wine.group_name as Keyword
+        ,GROUP_CONCAT(DISTINCT keywords_wine.group_name) as Keyword
     FROM vintages
     JOIN wines ON vintages.wine_id = wines.id
     JOIN keywords_wine ON vintages.wine_id = keywords_wine.wine_id
@@ -31,7 +31,7 @@ def get_query(min_price,max_price,
     if keyword_list:
         query += f""" AND keywords_wine.group_name IN ({",".join(["'{}'".format(c) for c
         in keyword_list])})"""
-    query += f""" ORDER BY vintages.ratings_average DESC LIMIT 10"""
+    query += f""" GROUP BY 1,2,3,4 ORDER BY vintages.ratings_average DESC LIMIT 10"""
     return query
 
 def get_country():
