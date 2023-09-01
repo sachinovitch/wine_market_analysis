@@ -13,11 +13,14 @@ def presentation(path):
 
 st.title("Here are some of our recommendations!")
 
-st.subheader("\n👍Here are our top 10 hight lights, where we select wines with the highest ratings, more than 1000 ratings counts.")
+st.subheader("\n👍Here are our top 10 hightlights, where we select wines with "
+             +"the highest ratings and more than 1000 ratings counts.")
 presentation("queries/highlights10_apporoach1.sql")
 
-st.subheader("\n👍Having a marketing budget? Here we select the 5 countries with the lowest price for wine, yet with good quality (ratings higher than 4.2)")
+st.subheader("\n👍Have a marketing budget? Here we select the 5 countries "
+             + "with the cheapeast but good quality wines (ratings higher than 4.2)")
 presentation("queries/country_with_budgets.sql")
 
-st.subheader("\n👍Fancy some Cabernet Sauvignon? Here's something similiar we would recommend you to give a try.")
+st.subheader("\n👍Fancy some Cabernet Sauvignon? Here some options we "
+             + "recommend for you.")
 presentation("queries/cabernet.sql")
