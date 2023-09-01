@@ -4,4 +4,5 @@
 import streamlit as st
 
 st.title("Find the wine you like!")
-st.markdown("# Welcome to our wine helper! Please choose a page on the left")
+st.markdown("## Welcome to our wine helper! Please choose a page on the left")
+st.image("assets/logo.png", width = 600)
